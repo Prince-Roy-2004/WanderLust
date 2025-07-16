@@ -1,0 +1,27 @@
+{
+  "name": "wanderlust",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Prince-Roy-2004/WanderLust.git"
+  },
+  "keywords": [],
+  "author": "Prince Roy",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Prince-Roy-2004/WanderLust/issues"
+  },
+  "homepage": "https://github.com/Prince-Roy-2004/WanderLust#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.16.3"
+  }
+}
