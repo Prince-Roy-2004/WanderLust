@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WanderLust</title>
@@ -16,13 +16,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
   </head>
-</head>
 
 
 
 
-<body>
+  <body>
     <%- include("../includes/navbar.ejs") %>      <!--Including Navbar-->
+    
+    <%- include("../includes/flash.ejs") %>       <!--Including Flash Messages-->
 
     <div class="container"><%- body %></div>
 
@@ -31,5 +32,5 @@
     integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" 
     crossorigin="anonymous"></script>
     <script src = "/js/script.js"></script>
-</body>
+  </body>
 </html>

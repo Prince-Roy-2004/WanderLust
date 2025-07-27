@@ -30,6 +30,7 @@ router.post("/", validateReview, wrapAsync(async(req, res) => {
     await newReview.save();
     await listing.save();
 
+    req.flash("success", "New Review Added!");  //Flash message
     res.redirect(`/listings/${listing._id}`);
 }));
 
@@ -40,6 +41,7 @@ router.delete("/:reviewId", wrapAsync(async(req, res) => {
     await Listing.findByIdAndUpdate(id, {$pull: {reviews : reviewId}});     //$pull - It pulls out(removes) all the instances of a value/values from an array that match a specified condition 
     await Review.findByIdAndDelete(reviewId);
 
+    req.flash("success", "Review Deleted!");  //Flash message
     res.redirect(`/listings/${id}`);
 }));
 

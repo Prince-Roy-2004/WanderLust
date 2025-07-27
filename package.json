@@ -19,8 +19,10 @@
   },
   "homepage": "https://github.com/Prince-Roy-2004/WanderLust#readme",
   "dependencies": {
+    "connect-flash": "^0.1.1",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "express-session": "^1.18.2",
     "joi": "^17.13.3",
     "method-override": "^3.0.0",
     "mongoose": "^8.16.3"

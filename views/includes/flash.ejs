@@ -1,0 +1,23 @@
+
+<!-- Here, inside if() we've success and success.length both. It is because the variable "success" that we created for res.locals
+ in our app.js is actually an array, so it always exists and using only 'if(success)' would always display an empty alert even if
+ we do nothing because success always exists and initially it remains empty until we do not add/update/ delete etc etc listings
+ or reviews. That's why along with that we use 'success.length', so if the array is empty that means no operation is performed, then
+ we won't get any empty alert -->
+
+
+<% if(success && success.length) { %>
+    <div class="alert alert-success alert-dismissible fade show col-6 offset-3" role = "alert">
+        <%= success %>
+        <button type = "button" class = "btn-close" data-bs-dismiss = "alert" aria-label = "close"></button>
+    </div>
+<%  } %>
+
+
+<% if(error && error.length) { %>
+    <div class="alert alert-danger alert-dismissible fade show col-6 offset-3" role = "alert">
+        <%= error %>
+        <button type = "button" class = "btn-close" data-bs-dismiss = "alert" aria-label = "close"></button>
+    </div>
+<%  } %>
+
