@@ -9,10 +9,14 @@ const ExpressError = require("./utils/ExpressError.js");
 // const { listingSchema, reviewSchema } = require("./schema.js");              //Learn why this was exported via de-sturucturing
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
 
 
-const listings = require("./routes/listing.js");
-const reviews = require("./routes/review.js");            //Requiring restructured code
+const listingRouter = require("./routes/listing.js");
+const reviewRouter = require("./routes/review.js");            //Requiring restructured code
+const userRouter = require("./routes/user.js");
 
 
 
@@ -59,6 +63,18 @@ app.get("/", (req, res) => {
 app.use(session(sessionOptions));
 app.use(flash());                   //Note - This middleware must be declared before the common route middlewares
 
+
+
+//This part needs to be after declaring session middlewares because Passport requires session to be initialized
+app.use(passport.initialize());     //It's a middleware that initializes Passport
+app.use(passport.session());       //Allows a user to go to multiple pages of the same website without the need to login in every page in a single session
+passport.use(new LocalStrategy(User.authenticate()));     //All users will be authenticated through LocalStrategy, using the 'authenticate()' method.
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+
 //Middleware for Flash Message
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");  
@@ -66,8 +82,22 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use("/listings", listings);           // Here, "/listings" is the common part in all the routes in "listing.js" file and "listings" is the required name from listing.js using module.exports
-app.use("/listings/:id/reviews", reviews);
+
+// //Adding a demo user
+// app.get("/demouser", async(req, res) => {
+//     let fakeUser = new User({
+//         email : "student@gmail.com",
+//         username : "delta-student",
+//     });
+
+//     let registeredUser = await User.register(fakeUser, "helloworld");   //"helloworld" is the password we set. 
+//     res.send(registeredUser);     //register() fxn by default checks the uniqueness of username.
+// });
+
+
+app.use("/listings", listingRouter);           // Here, "/listings" is the common part in all the routes in "listing.js" file and "listings" is the required name from listing.js using module.exports
+app.use("/listings/:id/reviews", reviewRouter);
+app.use("/", userRouter);
 
 
 //Random Route Error Handling
