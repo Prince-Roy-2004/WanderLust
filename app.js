@@ -70,15 +70,18 @@ app.use(passport.initialize());     //It's a middleware that initializes Passpor
 app.use(passport.session());       //Allows a user to go to multiple pages of the same website without the need to login in every page in a single session
 passport.use(new LocalStrategy(User.authenticate()));     //All users will be authenticated through LocalStrategy, using the 'authenticate()' method.
 
-passport.serializeUser(User.serializeUser());
+
+passport.serializeUser(User.serializeUser());        //Used to store an user's info for a session (Read/Watch again for better defin)
 passport.deserializeUser(User.deserializeUser());
+
 
 
 
 //Middleware for Flash Message
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");  
-    res.locals.error = req.flash("error");      
+    res.locals.error = req.flash("error");   
+    res.locals.currUser = req.user;           //req.user stores the info of a logged in user for a session   
     next();
 });
 
