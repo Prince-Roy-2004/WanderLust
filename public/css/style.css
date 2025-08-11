@@ -131,3 +131,10 @@ body {
 .show-img {
     height : 40vh; 
 }
+
+
+/* Map Styling */
+#map {
+    height: 400px; /* or whatever height you want */
+    width: 100%;   /* optional, but often useful */
+}

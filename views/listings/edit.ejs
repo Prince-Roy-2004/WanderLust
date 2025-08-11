@@ -4,7 +4,7 @@
 <div class="row mt-3">                         
     <div class = "col-8 offset-2">
         <h3>Edit Your Listing</h3>
-        <form method = "POST" action = "/listings/<%= listing._id%>?_method=PUT" novalidate class = "needs-validation"> <!--Bootstrap Form Validation added-->
+        <form method = "POST" action = "/listings/<%= listing._id%>?_method=PUT" novalidate class = "needs-validation" enctype = "multipart/form-data"> <!--Bootstrap Form Validation added-->
 
             <div class = "mb-3">              
                 <label for = "title" class = "form-label">Title</label>
@@ -18,9 +18,14 @@
                 <div class="invalid-feedback">Please add a proper description</div>
             </div>
 
+            <div class="mb-3">
+                Original Listing Image <br />
+                <img src = "<%= originalImageUrl %>" />    <!--This entire div is to display the previously added image of a listing on the Edit Page-->
+            </div>
+
             <div class = "mb-3">              
-                <label for = "image" class = "form-label">Image Link</label>
-                <input name = "listing[image]" value = "<%= listing.image %>" type = "text" class = "form-control" required>
+                <label for = "image" class = "form-label">Upload New Image</label>
+                <input name = "listing[image]" type = "file" class = "form-control">
                 <div class="invalid-feedback">Please add a valid image</div>
             </div>
 
@@ -49,3 +54,21 @@
         </form>
     </div>
 </div>
+
+<script>
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+</script>

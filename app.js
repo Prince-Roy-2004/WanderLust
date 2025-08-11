@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV != "production") {
+    require("dotenv").config();
+}
+
 //Requiring Everything Needed
 const express = require("express");
 const app = express();
@@ -8,6 +12,9 @@ const ejsMate = require("ejs-mate");                //Used Ejs-Mate For Templati
 const ExpressError = require("./utils/ExpressError.js");
 // const { listingSchema, reviewSchema } = require("./schema.js");              //Learn why this was exported via de-sturucturing
 const session = require("express-session");
+
+const MongoStore = require('connect-mongo');  //Mongo- Session 
+
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -20,7 +27,9 @@ const userRouter = require("./routes/user.js");
 
 
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const dbUrl = process.env.ATLASDB_URL;
+
 //Creating a Connection with DataBase
 main().then(() => {
     console.log("Connected to DB");
@@ -31,19 +40,32 @@ main().then(() => {
 
 //Defining The Main Function
 async function main() {
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(dbUrl);
 };
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.use(express.urlencoded({extended : true}));
+app.use(express.urlencoded({extended : true}));   //Its a parser, used so that our backend can understand what is coming from the FORM.
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
 
+const store = MongoStore.create({
+    mongoUrl : dbUrl,
+    crypto : {
+        secret : process.env.SECRET,
+    },
+    touchAfter : 24 * 3600, //Storing session info for 24hrs, i.e After logging once, user will automatically be logged out after 24 hrs (in seconds), so unnecessarily bar bar page refresh korle user logged out hbe na
+});
+
+store.on("error", () => {
+    console.log("Error in Mongo Session Store", err);   //Know from GPT
+});
+
 const sessionOptions = {
-    secret : "ultimatespidermonkey",
+    store,                            //Storing Mongo session store. Now session info will be stored into Atlas Database(cloud DB), not in our local machine.
+    secret : process.env.SECRET,
     resave : false,
     saveUninitialized : true,
     cookie : {
@@ -54,11 +76,10 @@ const sessionOptions = {
 };
 
 
-//Home Route
-app.get("/", (req, res) => {
-    res.send("Hi, I'm root");
-});
-
+// //Home Route
+// app.get("/", (req, res) => {
+//     res.send("Hi, I'm root");
+// });
 
 app.use(session(sessionOptions));
 app.use(flash());                   //Note - This middleware must be declared before the common route middlewares
