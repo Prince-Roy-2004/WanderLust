@@ -76,10 +76,10 @@ const sessionOptions = {
 };
 
 
-// //Home Route
-// app.get("/", (req, res) => {
-//     res.send("Hi, I'm root");
-// });
+//Home Route
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
 
 app.use(session(sessionOptions));
 app.use(flash());                   //Note - This middleware must be declared before the common route middlewares
